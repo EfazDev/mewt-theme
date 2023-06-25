@@ -58,7 +58,7 @@ def rgbStage():
 
     if rval2 and bval2 and gval2 and hex and hexstart and hexend:
         print(f"RGB: \x1b[38;2;{str(rval2)};{str(gval2)};{str(bval2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
-        print(f"Index: \033[1;{str(ival2)}m{Style.BRIGHT}{Fore.WHITE}")
+        print(f"Index: \033[1;{str(ival2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
         c = input(f"Confirm? (y/n): ")
         if c.lower() == "y":
             global r
