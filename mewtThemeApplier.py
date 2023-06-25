@@ -2,6 +2,7 @@ import json
 import colorama
 from colorama import Fore, Style
 import ast
+import sys
 import os
 
 mewtMain = ""
@@ -14,80 +15,104 @@ hexcode = ""
 hexcodestart = ""
 hexcodeend = ""
 
-# File Asked Step
-
-print("Welcome to Mewt Sniper Theme Customizer!")
-print("Change embeds, global log embed color and your main theme in mewt UI!")
-print("Made by efazdev")
-
-print("----------")
-
-print("File Stage")
-
-def promptMain():
-    global mewtMain
-    asked = input("What's your mewt sniper main.py?")
-    asked = asked.replace("'", "")
-    correct = input("This is correct? If not, enter n.")
-    if correct.lower() == "y":
-        mewtMain = asked
+def validateArguments():
+    listOfArgs = sys.argv
+    if len(listOfArgs) >= 8:
+        global mewtMain
+        mewtMain = listOfArgs[1]
+        global r
+        r = int(listOfArgs[2])
+        global g
+        g = int(listOfArgs[3])
+        global b
+        b = int(listOfArgs[4])
+        global i
+        i = int(listOfArgs[5])
+        global hexcode
+        hexcode = listOfArgs[6]
+        global hexcodestart
+        hexcodestart = listOfArgs[7]
+        global hexcodeend
+        hexcodeend = listOfArgs[8]
+        return True
     else:
-        promptMain()
-promptMain()
+        return False
+validateArgs = validateArguments()
+if validateArgs == False:
+    # File Asked Step
 
-print("----------")
+    print("Welcome to Mewt Sniper Theme Customizer!")
+    print("Change embeds, global log embed color and your main theme in mewt UI!")
+    print("Made by efazdev")
 
-# Color Variable Preparation
+    print("----------")
 
-print("Color Stage")
+    print("File Stage")
 
-def rgbStage():
-    rval = input("Enter your RGB (R): ")
-    gval = input("Enter your RGB (G): ")
-    bval = input("Enter your RGB (B): ")
-    ival = input("Enter your Index (Resource usable to choose from: https://static.javatpoint.com/python/images/how-to-print-colored-text-in-python2.png): ")
-    hex = input("Enter Hex Code for Color (no # symbol): ")
-
-    hexstart = input("Enter Gradient Hex Code for Color (no # symbol) (start): ")
-    hexend = input("Enter Gradient Hex Code for Color (no # symbol) (end): ")
-
-    rval2 = int(rval)
-    gval2 = int(gval)
-    bval2 = int(bval)
-    ival2 = int(ival)
-
-    if rval2 and bval2 and gval2 and hex and hexstart and hexend:
-        print(f"RGB: \x1b[38;2;{str(rval2)};{str(gval2)};{str(bval2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
-        print(f"Index: \033[1;{str(ival2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
-        c = input(f"Confirm? (y/n): ")
-        if c.lower() == "y":
-            global r
-            global g
-            global b
-            global i
-            r = rval2
-            g = gval2
-            b = bval2
-            i = ival2
-            global hexcode
-            hexcode = hex.upper()
-
-            global hexcodestart
-            global hexcodeend
-            hexcodestart = hexstart.upper()
-            hexcodeend = hexend.upper()
+    def promptMain():
+        global mewtMain
+        asked = input("What's your mewt sniper main.py?")
+        asked = asked.replace("'", "")
+        correct = input("This is correct? If not, enter n.")
+        if correct.lower() == "y":
+            mewtMain = asked
         else:
+            promptMain()
+    promptMain()
+
+    print("----------")
+
+    # Color Variable Preparation
+
+    print("Color Stage")
+
+    def rgbStage():
+        rval = input("Enter your RGB (R): ")
+        gval = input("Enter your RGB (G): ")
+        bval = input("Enter your RGB (B): ")
+        ival = input("Enter your Index (Resource usable to choose from: https://static.javatpoint.com/python/images/how-to-print-colored-text-in-python2.png): ")
+        hex = input("Enter Hex Code for Color (no # symbol): ")
+
+        hexstart = input("Enter Gradient Hex Code for Color (no # symbol) (start): ")
+        hexend = input("Enter Gradient Hex Code for Color (no # symbol) (end): ")
+
+        rval2 = int(rval)
+        gval2 = int(gval)
+        bval2 = int(bval)
+        ival2 = int(ival)
+
+        if rval2 and bval2 and gval2 and hex and hexstart and hexend:
+            print(f"RGB: \x1b[38;2;{str(rval2)};{str(gval2)};{str(bval2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
+            print(f"Index: \033[1;{str(ival2)}mTest Message{Style.BRIGHT}{Fore.WHITE}")
+            c = input(f"Confirm? (y/n): ")
+            if c.lower() == "y":
+                global r
+                global g
+                global b
+                global i
+                r = rval2
+                g = gval2
+                b = bval2
+                i = ival2
+                global hexcode
+                hexcode = hex.upper()
+
+                global hexcodestart
+                global hexcodeend
+                hexcodestart = hexstart.upper()
+                hexcodeend = hexend.upper()
+            else:
+                rgbStage()
+        else:
+            print(f"Error: An variable was inputted correctly and no number was returned. receieved: {str(rval2)}, {str(gval2)}, {str(bval2)}, {hex}, {hexstart}, {hexend}")
             rgbStage()
-    else:
-        print(f"Error: An variable was inputted correctly and no number was returned. receieved: {str(rval2)}, {str(gval2)}, {str(bval2)}, {hex}, {hexstart}, {hexend}")
-        rgbStage()
-rgbStage()
+    rgbStage()
 
-# Code Prepared
+    # Code Prepared
 
-print("----------")
+    print("----------")
 
-print("Finishing few changes..")
+    print("Finishing few changes..")
 
 rawMewt = open("mewtRaw.txt", "r")
 contents = rawMewt.read()
@@ -102,8 +127,16 @@ e = d.replace("4.4.4 Tester Version 2", "4.4.4 Tester Version 2 - Theme Applier 
 
 print("Code is ready!")
 
-applynow = input("Apply now to file? ")
-if applynow.lower() == "y":
+if validateArgs == False:
+    applynow = input("Apply now to file? ")
+    if applynow.lower() == "y":
+        f = open(mewtMain, "w")
+        print("Opened")
+        f.write(e)
+        f.close()
+        print("Finished process and overwrited the script.")
+        print(f"Overwrited: {mewtMain}")
+else:
     f = open(mewtMain, "w")
     print("Opened")
     f.write(e)
